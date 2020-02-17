@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.scrm.address.dao.TheAddressDao">
+
+	<sql id="the_address_base_select">
+		SELECT ROW_ID,AREA_CODE,AREA_NAME,PARENT_CODE,AREA_RUNK,HAS_CHILD,ACTIVE_FLAG,CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE FROM YT_CD_AREA WHERE ACTIVE_FLAG = 1
+	</sql>
+	<!-- 搜索所有的省份 -->
+	<select id="findAllProvince" resultType="TheAddress">
+		<include refid="the_address_base_select"/>
+		 AND PARENT_CODE = -1
+	</select>
+	<!-- 查询省份下的地区 -->
+	<select id="findArea" resultType="TheAddress" parameterType="TheAddress">
+		<include refid="the_address_base_select"/>
+		 AND PARENT_CODE = #{parentCode}
+	</select>
+
+</mapper>

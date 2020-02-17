@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+	<description><![CDATA[权限标签组件"]]></description>
+	<display-name>"权限标签"</display-name>
+	<tlib-version>1.0</tlib-version>
+	<short-name>auth</short-name><!-- 该标签库的默认短名 -->
+	<uri>/auth-tags</uri><!-- 它指定该标签库的 URI,相当于指定该标签库的唯一标识 -->
+	<tag>
+		<description><![CDATA[组件权限控制组件]]></description>
+		<name>have</name><!-- 该标签库的名称,JSP 页面中就是根据该名称来使用此标签的 -->
+		<tag-class>com.situ.btoa.commons.auth.AuthTag</tag-class><!-- 指定标签的处理类 -->
+		<body-content>scriptless</body-content><!-- 指定标签体内容 -->
+		<attribute><!-- 对于有属性的标签,需要为 tag 元素增加 attribute 子元素 -->
+			<description><![CDATA[权限URL]]></description>
+			<name>url</name><!-- 设置属性名,子元素的值是字符串内容。 -->
+			<required>true</required><!-- 指定属性是否是必须的或者可选的,如果设置为false为可选。 -->
+			<rtexprvalue>false</rtexprvalue><!-- rtexprvalue的全称是 Run-time Expression 
+				Value, 它用于表示是否能够利用JSP表白式 -->
+			<type>Boolean</type><!-- 定义该属性的Java类类型 。默认指定为 String -->
+		</attribute>
+		<attribute><!-- 对于有属性的标签,需要为 tag 元素增加 attribute 子元素 -->
+			<description><![CDATA[权限URL]]></description>
+			<name>method</name><!-- 设置属性名,子元素的值是字符串内容。 -->
+			<required>true</required><!-- 指定属性是否是必须的或者可选的,如果设置为false为可选。 -->
+			<rtexprvalue>false</rtexprvalue><!-- rtexprvalue的全称是 Run-time Expression 
+				Value, 它用于表示是否能够利用JSP表白式 -->
+			<type>Boolean</type><!-- 定义该属性的Java类类型 。默认指定为 String -->
+		</attribute>
+	</tag>
+</taglib>
