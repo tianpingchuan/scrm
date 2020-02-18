@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.scrm.sys.dd.dao.DdDao">
+	<sql id="dd_base_column">
+		PARENT_KEY,DD_KEY,DD_VALUE,DD_DESCRIBE,DD_ORDER,HAS_CHILD,ACTIVE_FLAG,CREATE_BY,CREATE_DATE
+	</sql>
+	<sql id="dd_base_select">
+		SELECT ROW_ID,
+		<include refid="dd_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_DD WHERE ACTIVE_FLAG = 1
+	</sql>
+	<insert id="save" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_DD (
+		<include refid="dd_base_column" />
+		)
+		VALUES (#{parentKey},#{ddKey},#{ddValue},#{ddDescribe},#{ddOrder},#{hasChild},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+	
+	<select id="find" resultType="Dd">
+		<include refid="dd_base_select" />
+		ORDER BY DD_ORDER
+	</select>
+	<select id="get" resultType="Dd">
+		<include refid="dd_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="getByKey" resultType="Dd">
+		<include refid="dd_base_select" />
+		AND DD_KEY = #{ddKey}
+	</select>
+	<select id="getMaxOrder" resultType="java.lang.Integer" parameterType="Dd">
+		SELECT MAX(DD_ORDER) FROM TB_DD WHERE ACTIVE_FLAG = 1 AND PARENT_KEY = #{parentKey}
+	</select>
+	<select id="findByParent" resultType="Dd" parameterType="Dd">
+		<include refid="dd_base_select" />
+		AND PARENT_KEY = #{parentKey}
+	</select>
+	<update id="delete">
+		UPDATE TB_DD SET ACTIVE_FLAG = 0 WHERE ROW_ID = #{rowId}
+	</update>
+	<update id="updateHasChild">
+		UPDATE TB_DD SET HAS_CHILD = #{hasChild} WHERE DD_KEY = #{ddKey}
+	</update>
+	<select id="getByNameAndParent" resultType="Dd">
+		<include refid="dd_base_select" />
+		AND DD_VALUE = #{ddValue} AND PARENT_KEY = #{parentKey}
+	</select>
+	<update id="update">
+		UPDATE TB_DD
+		<set>
+			<if test="parentKey != null">
+				PARENT_KEY = #{parentKey},
+			</if>
+			<if test="ddKey != null">
+				DD_KEY = #{ddKey},
+			</if>
+			<if test="ddValue != null">
+				DD_VALUE = #{ddValue},
+			</if>
+			<if test="ddDescribe != null">
+				DD_DESCRIBE = #{ddDescribe},
+			</if>
+			<if test="ddOrder != null">
+				DD_ORDER = #{ddOrder},
+			</if>
+			<if test="hasChild != null">
+				HAS_CHILD = #{hasChild},
+			</if>
+			<if test="activeFlag != null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="createBy != null">
+				CREATE_BY = #{createBy},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="updateBy != null">
+				UPDATE_BY = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</update>
+</mapper>

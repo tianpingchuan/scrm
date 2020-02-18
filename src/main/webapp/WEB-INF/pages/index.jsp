@@ -86,6 +86,9 @@
 							<dd>
 								<a href="client">客户管理</a>
 							</dd>
+							<dd>
+								<a href="dd">数据字典管理</a>
+							</dd>
 						</dl></li>
 					<li class="layui-nav-item"><a href="">云市场</a></li>
 					<li class="layui-nav-item"><a href="">发布商品</a></li>
