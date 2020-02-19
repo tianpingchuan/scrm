@@ -10,7 +10,7 @@
 	<tag>
 		<description><![CDATA[组件权限控制组件]]></description>
 		<name>have</name><!-- 该标签库的名称,JSP 页面中就是根据该名称来使用此标签的 -->
-		<tag-class>com.situ.btoa.commons.auth.AuthTag</tag-class><!-- 指定标签的处理类 -->
+		<tag-class>com.situ.scrm.commons.auth.AuthTag</tag-class><!-- 指定标签的处理类 -->
 		<body-content>scriptless</body-content><!-- 指定标签体内容 -->
 		<attribute><!-- 对于有属性的标签,需要为 tag 元素增加 attribute 子元素 -->
 			<description><![CDATA[权限URL]]></description>

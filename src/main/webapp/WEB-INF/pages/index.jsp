@@ -84,14 +84,21 @@
 								 <a href="user"><i class="layui-icon layui-icon-user"></i> 用户管理</a>
 							</dd>
 							<dd>
+								<a href="role">角色管理</a>
+							</dd>
+							<dd>
+								<a href="sysresource">资源管理</a>
+							</dd>
+							<dd>
 								<a href="client">客户管理</a>
 							</dd>
 							<dd>
 								<a href="dd">数据字典管理</a>
 							</dd>
+							<dd>
+								<a href="set">系统设置</a>
+							</dd>
 						</dl></li>
-					<li class="layui-nav-item"><a href="">云市场</a></li>
-					<li class="layui-nav-item"><a href="">发布商品</a></li>
 				</ul>
 			</div>
 		</div>

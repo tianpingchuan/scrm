@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.scrm.sys.role.dao.RoleDao">
+	<sql id="role_base_column">
+		ROLE_CODE,ROLE_NAME,ROLE_KIND,ROLE_INFO,ACTIVE_FLAG,CREATE_BY,CREATE_DATE
+	</sql>
+	<sql id="role_base_select">
+		SELECT ROW_ID,
+		<include refid="role_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM BT_SYS_ROLE WHERE ACTIVE_FLAG = 1
+	</sql>
+	<!-- Column 语句 -->
+	<sql id="column_fragement">
+		<if test="roleCode != null">
+			ROLE_CODE,
+		</if>
+		<if test="roleName != null">
+			ROLE_NAME,
+		</if>
+		<if test="roleKind != null">
+			ROLE_KIND,
+		</if>
+		<if test="roleInfo != null">
+			ROLE_INFO,
+		</if>
+		<if test="activeFlag != null">
+			ACTIVE_FLAG,
+		</if>
+		<if test="createBy != null">
+			CREATE_BY,
+		</if>
+		<if test="createDate != null">
+			CREATE_DATE,
+		</if>
+		<if test="updateBy != null">
+			UPDATE_BY,
+		</if>
+		<if test="updateDate != null">
+			UPDATE_DATE,
+		</if>
+	</sql>
+	<!-- Values 语句 -->
+	<sql id="values_fragement">
+		<if test="roleCode != null">
+			#{roleCode},
+		</if>
+		<if test="roleName != null">
+			#{roleName},
+		</if>
+		<if test="roleKind != null">
+			#{roleKind},
+		</if>
+		<if test="roleInfo != null">
+			#{roleInfo},
+		</if>
+		<if test="activeFlag != null">
+			#{activeFlag},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+	</sql>
+	<insert id="save" parameterType="Role" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO BT_SYS_ROLE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<include refid="column_fragement" />
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<include refid="values_fragement" />
+		</trim>
+	</insert>
+	<update id="update" parameterType="Role">
+		UPDATE BT_SYS_ROLE
+		<set>
+			<if test="roleCode != null">
+				ROLE_CODE = #{roleCode},
+			</if>
+			<if test="roleName != null">
+				ROLE_NAME = #{roleName},
+			</if>
+			<if test="roleKind != null">
+				ROLE_KIND = #{roleKind},
+			</if>
+			<if test="roleInfo != null">
+				ROLE_INFO = #{roleInfo},
+			</if>
+			<if test="activeFlag != null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="createBy != null">
+				CREATE_BY = #{createBy},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="updateBy != null">
+				UPDATE_BY = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</update>
+	<delete id="delete">
+		DELETE FROM BT_SYS_ROLE WHERE ROW_ID = #{rowId}
+	</delete>
+	<select id="get" resultType="Role">
+		<include refid="role_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="find" resultType="Role">
+		<include refid="role_base_select" />
+	</select>
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT COUNT(ROW_ID) FROM BT_SYS_ROLE WHERE ACTIVE_FLAG = 1
+		<!-- 引入多条件查询的语句 -->
+		<include refid="search_fragement" />
+	</select>
+	<select id="findByPage" resultType="Role">
+		<include refid="role_base_select" />
+		<!-- 引入多条件查询的语句 -->
+		<include refid="search_fragement" />
+		<!-- 执行分页的语句 -->
+		LIMIT #{pagination.firstResult},#{pagination.maxResults}
+	</select>
+	<select id="getByName" resultType="Role">
+		<include refid="role_base_select" />
+		AND ROLE_NAME = #{roleName}
+	</select>
+	<!-- 拼接多条件查询的SQL语句 -->
+	<sql id="search_fragement">
+		<if test="searchParam!=null">
+			<if test="searchParam.rowId!=null">
+				AND ROW_ID = #{searchParam.rowId}
+			</if>
+			<if test="searchParam.roleCode!=null">
+				AND ROLE_CODE = #{searchParam.roleCode}
+			</if>
+			<if test="searchParam.roleName!=null">
+				AND ROLE_NAME = #{searchParam.roleName}
+			</if>
+			<if test="searchParam.roleKind != null">
+				AND ROLE_KIND = #{searchParam.roleKind}
+			</if>
+			<if test="searchParam.roleInfo!=null">
+				AND ROLE_INFO = #{searchParam.roleInfo}
+			</if>
+			<if test="searchParam.activeFlag!=null">
+				AND ACTIVE_FLAG = #{searchParam.activeFlag}
+			</if>
+		</if>
+	</sql>
+</mapper>

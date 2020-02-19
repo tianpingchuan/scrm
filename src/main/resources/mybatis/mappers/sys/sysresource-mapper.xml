@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.scrm.sys.sysresource.dao.SysResourceDao">
+	<sql id="resource_base_column">
+		PARENT_CODE,RESC_CODE,RESC_NAME,RESC_TYPE,RESC_ORDER,MENU_URL,RESC_ICON,HAS_CHILD,ACTIVE_FLAG,CREATE_BY,CREATE_DATE
+	</sql>
+	<sql id="resource_base_select">
+		SELECT ROW_ID,
+		<include refid="resource_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM BT_SYS_SYS_RESOURCE WHERE ACTIVE_FLAG = 1
+	</sql>
+	<insert id="save" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO BT_SYS_SYS_RESOURCE (
+		<include refid="resource_base_column" />
+		)
+		VALUES (#{parentCode},#{rescCode},#{rescName},#{rescType},#{rescOrder},#{menuUrl},#{rescIcon},#{hasChild},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+	<update id="update">
+		UPDATE BT_SYS_SYS_RESOURCE
+		<set>
+			<if test="parentCode != null">
+				PARENT_CODE = #{parentCode},
+			</if>
+			<if test="rescCode != null">
+				RESC_CODE = #{rescCode},
+			</if>
+			<if test="rescName != null">
+				RESC_NAME = #{rescName},
+			</if>
+			<if test="rescType != null">
+				RESC_TYPE = #{rescType},
+			</if>
+			<if test="rescOrder != null">
+				RESC_ORDER = #{rescOrder},
+			</if>
+			<if test="menuUrl != null">
+				MENU_URL = #{menuUrl},
+			</if>
+			<if test="rescIcon != null">
+				RESC_ICON = #{rescIcon},
+			</if>
+			<if test="hasChild != null">
+				HAS_CHILD = #{hasChild},
+			</if>
+			<if test="activeFlag != null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="createBy != null">
+				CREATE_BY = #{createBy},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="updateBy != null">
+				UPDATE_BY = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</update>
+	<select id="find" resultType="SysResource">
+		<include refid="resource_base_select" />
+		ORDER BY RESC_ORDER
+	</select>
+	<select id="get" resultType="SysResource">
+		<include refid="resource_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="getByCode" resultType="SysResource">
+		<include refid="resource_base_select" />
+		AND RESC_CODE = #{rescCode}
+	</select>
+	<select id="getByNameAndParent" resultType="SysResource">
+		<include refid="resource_base_select" />
+		AND RESC_NAME = #{rescName} AND PARENT_CODE = #{parentCode}
+	</select>
+	<select id="getMaxOrder" resultType="java.lang.Integer">
+		SELECT MAX(RESC_ORDER) FROM BT_SYS_SYS_RESOURCE WHERE ACTIVE_FLAG = 1 AND PARENT_CODE = #{parentCode}
+	</select>
+	<select id="findByParent" resultType="SysResource">
+		<include refid="resource_base_select" />
+		AND PARENT_CODE = #{parentCode}
+	</select>
+	<select id="findIdByParent" resultType="java.lang.Long">
+		SELECT ROW_ID FROM BT_SYS_SYS_RESOURCE WHERE ACTIVE_FLAG = 1 AND PARENT_CODE = #{parentCode}
+	</select>
+	<update id="updateHasChild">
+		UPDATE BT_SYS_SYS_RESOURCE SET HAS_CHILD = #{hasChild} WHERE RESC_CODE = #{rescCode}
+	</update>
+	<delete id="delete">
+		DELETE FROM BT_SYS_SYS_RESOURCE WHERE ROW_ID = #{rowId}
+	</delete>
+</mapper>

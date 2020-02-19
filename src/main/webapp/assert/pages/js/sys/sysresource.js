@@ -36,7 +36,7 @@ layui.use(['layer', 'util', 'treeTable','iconPicker'], function () {
                         return util.toDateString(d.createDate);
                     }, width: 180
                 },
-                {align: 'center', toolbar: '#resourceBtnTpl', title: '操作', width: 200}
+                {align: 'center', toolbar: '#resourceBtnTpl', title: '操作', width: 250}
             ],
             style: 'margin-top:0;',
             reqData: function(data, callback) {

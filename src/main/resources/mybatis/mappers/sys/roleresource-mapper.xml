@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.scrm.sys.role.dao.RoleResourceDao">
+	<sql id="role_resource_base_column">
+		ROLE_ID,RESC_CODE,ACTIVE_FLAG,CREATE_BY,CREATE_DATE
+	</sql>
+	<sql id="role_resource_base_select">
+		SELECT ROW_ID,
+		<include refid="role_resource_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM BT_SYS_ROLE_RESOURCE WHERE ACTIVE_FLAG = 1
+	</sql>
+	<select id="findCode" resultType="java.lang.String">
+		SELECT RESC_CODE FROM BT_SYS_ROLE_RESOURCE WHERE ACTIVE_FLAG = 1 AND ROLE_ID = #{roleId}
+	</select>
+	<select id="findAll" resultType="RoleResource">
+		SELECT ROW_ID,
+		<include refid="role_resource_base_column" />FROM BT_SYS_ROLE_RESOURCE 
+		WHERE ROLE_ID = #{roleId}
+	</select>
+	<update id="updateFail">
+		UPDATE BT_SYS_ROLE_RESOURCE SET ACTIVE_FLAG = 0 WHERE ROLE_ID = #{roleId}
+	</update>
+	<!-- 批量insert -->
+	<insert id="saveBatch">
+		INSERT INTO BT_SYS_ROLE_RESOURCE (<include refid="role_resource_base_column"/>)
+		VALUES 
+		<foreach collection="roleResourceList" item="roleResource" separator=",">
+			(#{roleResource.roleId},#{roleResource.rescCode},#{roleResource.activeFlag},#{roleResource.createBy},#{roleResource.createDate})
+		</foreach>
+	</insert>
+	<!-- 批量update -->
+	<update id="updateBatch">
+		<foreach collection="roleResourceList" item="roleResource" separator=";">
+			UPDATE BT_SYS_ROLE_RESOURCE SET 
+			ROLE_ID = #{roleResource.roleId},
+			RESC_CODE = #{roleResource.rescCode},
+			ACTIVE_FLAG = #{roleResource.activeFlag}
+			WHERE ROW_ID = #{roleResource.rowId}
+		</foreach>
+	</update>
+</mapper>

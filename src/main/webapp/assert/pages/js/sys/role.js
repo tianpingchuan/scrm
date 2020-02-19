@@ -27,15 +27,20 @@ layui.use([ 'table', 'form' ], function() {
 	});
 	
 	//进入 设置权限
-	treeTable.on('tool(list_table)', function(obj) {
+	table.on('tool(filter_table)', function(obj) {
 		var event = obj.event;
 		//通过data将要修改的数据的主键 取出
 		var rowId = obj.data.rowId;
-		/*switch (event) {
-			case 'set_resource':function(){
-				
+		switch (event) {
+			case 'set_resource':{
+				$.ajax({
+					url:'role/goauth/'+rowId,
+					success:function(htmlData){
+						$('#layui-body-main').html(htmlData);
+					}
+				});
 			}
 			break;
-		}*/
+		}
 	});
 });
