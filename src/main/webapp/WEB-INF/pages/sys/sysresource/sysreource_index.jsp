@@ -8,10 +8,12 @@
 				<div class="layui-card-header">
 					资源管理
 					<!-- 使用自定义标签在页面上判断 button或是超链接 是否可以显示 -->
+					<auth:have url="sysresource" method="post">
 					<!-- 新增按钮 开始 -->
 					<button type="button" class="layui-btn layui-btn-sm layui-btn-add">
 						<i class="layui-icon layui-icon-addition"></i>新增
 					</button>
+					</auth:have>
 					<!-- 新增按钮 结束 -->
 				</div>
 				<div class="layui-card-body">
@@ -27,9 +29,15 @@
 <input type="hidden" id="hideTitle" value="资源"/>
 <!-- 表格操作列 -->
 <script type="text/html" id="resourceBtnTpl">
+<auth:have url="sysresource" method="post">
 	<a class="layui-btn  layui-btn-xs" lay-event="res_child">新增子资源</a>
-    <a class="layui-btn  layui-btn-xs" lay-event="res_edit">修改</a>
+</auth:have>
+<auth:have url="sysresource" method="put">
+   <a class="layui-btn  layui-btn-xs" lay-event="res_edit">修改</a>
+</auth:have>
+<auth:have url="sysresource" method="delete">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="res_del">删除</a>
+</auth:have>
 </script>
 
 <!-- 表格状态列 -->

@@ -29,8 +29,10 @@ public class SysCountUtils implements Serializable {
 	private static final Format FORMARt_YY_MM_DD = new SimpleDateFormat("yyMMdd");
 	private static final Format FOMATER_00 = new DecimalFormat("00");
 	private static final Format FOMATER_000 = new DecimalFormat("000");
+	private static final Format FOMATER_000000 = new DecimalFormat("00000");
 	private static final String S = "S";// 资源编号的开头
 	private static final String D = "D";// 数据字典的开头
+	private static final String C = "C";// 客户编号的开头
 	@Autowired
 	private SysCountDao sysCountDao;
 
@@ -90,6 +92,25 @@ public class SysCountUtils implements Serializable {
 		// 将当前的序列 加一 。然后 append到numBuffer 中
 		int sequnce = index + 1;
 		buffer.append(FOMATER_000.format(sequnce));
+		// 将这个序列的最新值更新回数据库。
+		sysCountDao.updatePlus(columnName, sequnce);
+		return buffer.toString();
+	}
+	
+	/**
+	 * @Title: buildRescCode
+	 * @Description:(得到客户的编号)
+	 * @return
+	 */
+	public String buildClientCode() {
+		// 要查询的字段名称 INDEX3
+		String columnName = SysCount.INDEX4;
+		StringBuffer buffer = new StringBuffer(C);
+		// 通过序列表的DAO查询出当前序列的数 :比如说当前序列 是 2
+		int index = sysCountDao.get(columnName);
+		// 将当前的序列 加一 。然后 append到numBuffer 中
+		int sequnce = index + 1;
+		buffer.append(FOMATER_000000.format(sequnce));
 		// 将这个序列的最新值更新回数据库。
 		sysCountDao.updatePlus(columnName, sequnce);
 		return buffer.toString();

@@ -53,4 +53,11 @@ public interface SysActionInfoDao {
 	 * @param rescCode
 	 */
 	void delete(String rescCode);
+
+	/** 
+	 * @Title: find 
+	 * @Description:(查找全部动作信息)
+	 * @return  
+	 */ 
+	List<SysActionInfo> find();
 }

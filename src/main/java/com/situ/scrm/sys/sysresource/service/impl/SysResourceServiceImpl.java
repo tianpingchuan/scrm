@@ -157,6 +157,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	public Long updateSysResource(SysResource sysResource) {
 		Long rowId = sysResource.getRowId();
 		SysResource editResource = sysResourceDao.get(rowId);
+		String rescCode = editResource.getRescCode();
 		editResource = DAOUtils.buildEditData(editResource, sysResource);
 		editResource.setUpdateBy("sys");
 		editResource.setUpdateDate(new Date());
@@ -164,7 +165,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 		// 处理资源信息对应的 对象数据
 		List<SysActionInfo> actionInfoList = removeNullData(sysResource.getActionInfoList());
 		// 处理资源信息的动作数据
-		handlerActionInfoListData(editResource.getRescCode(), actionInfoList);
+		handlerActionInfoListData(rescCode, actionInfoList);
 		return rowId;
 	}
 
@@ -196,6 +197,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 	private void handlerActionInfoListData(String rescCode, List<SysActionInfo> actionInfoList) {
 		List<SysActionInfo> haveActionInfoList = sysActionInfoDao.findByCode(rescCode);
 		// 尝试将原来的Actioninfo数据设置成失效
+		
 		sysActionInfoDao.updateFail(rescCode);
 		if (actionInfoList != null && !actionInfoList.isEmpty()) {
 			Date nowDate = new Date();

@@ -22,10 +22,11 @@ public class SysCount extends BaseClass implements Serializable {
 	public static final String INDEX1 = "INDEX1";
 	public static final String INDEX2 = "INDEX2";
 	public static final String INDEX3 = "INDEX3";
+	public static final String INDEX4 = "INDEX4";
 	private Integer index1;// 订单编号#每天重置
 	private Integer index2;// 资源编号#无需重置
 	private Integer index3;// 数据字典key#无需重置
-	private Integer index4;// 系统预留
+	private Integer index4;// 客户编号
 	private Integer index5;// 系统预留
 
 	public Integer getIndex1() {

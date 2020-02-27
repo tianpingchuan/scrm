@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.scrm.bus.client.dao.ClientDao">
+	<sql id="client_base_column">
+		CLIENT_CODE,CLIENT_NAME,CLIENT_PHONE,LINK_MAN,QQ_NUMBER,EMAIL_NUMBER,PROVICE_CODE,CITY_CODE,AREA_CODE,TRUE_ADDRESS,CLIENT_TYPE,CLIENT_KIND,CLIENT_SOURCE,TO_INDUSTRY,PUBLIC_DATE,IF_PUBLIC,ACCESSORY_BAG,OTHER_COMMENT,ACTIVE_FLAG,CREATE_BY,CREATE_DATE
+	</sql>
+	<sql id="client_base_select">
+		SELECT ROW_ID,
+		<include refid="client_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_CLIENT WHERE ACTIVE_FLAG = 1
+	</sql>
+	<!-- Column 语句 -->
+	<sql id="column_fragement">
+		<if test="clientCode != null">
+			CLIENT_CODE,
+		</if>
+		<if test="clientName != null">
+			CLIENT_NAME,
+		</if>
+		<if test="clientPhone != null">
+			CLIENT_PHONE,
+		</if>
+		<if test="linkMan != null">
+			LINK_MAN,
+		</if>
+		<if test="qqNumber != null">
+			QQ_NUMBER,
+		</if>
+		<if test="emailNumber != null">
+			EMAIL_NUMBER,
+		</if>
+		<if test="proviceCode != null">
+			PROVICE_CODE,
+		</if>
+		<if test="cityCode != null">
+			CITY_CODE,
+		</if>
+		<if test="areaCode != null">
+			AREA_CODE,
+		</if>
+		<if test="trueAddress != null">
+			TRUE_ADDRESS,
+		</if>
+		<if test="clientType != null">
+			CLIENT_TYPE,
+		</if>
+		<if test="clientKind != null">
+			CLIENT_KIND,
+		</if>
+		<if test="clientSource != null">
+			CLIENT_SOURCE,
+		</if>
+		<if test="toIndustry != null">
+			TO_INDUSTRY,
+		</if>
+		<if test="publicDate != null">
+			PUBLIC_DATE,
+		</if>
+		<if test="ifPublic != null">
+			IF_PUBLIC,
+		</if>
+		<if test="accessoryBag != null">
+			ACCESSORY_BAG,
+		</if>
+		<if test="otherComment != null">
+			OTHER_COMMENT,
+		</if>
+		<if test="activeFlag != null">
+			ACTIVE_FLAG,
+		</if>
+		<if test="createBy != null">
+			CREATE_BY,
+		</if>
+		<if test="createDate != null">
+			CREATE_DATE,
+		</if>
+		<if test="updateBy != null">
+			UPDATE_BY,
+		</if>
+		<if test="updateDate != null">
+			UPDATE_DATE,
+		</if>
+	</sql>
+	<!-- Values 语句 -->
+	<sql id="values_fragement">
+		<if test="clientCode != null">
+			#{clientCode},
+		</if>
+		<if test="clientName != null">
+			#{clientName},
+		</if>
+		<if test="clientPhone != null">
+			#{clientPhone},
+		</if>
+		<if test="linkMan != null">
+			#{linkMan},
+		</if>
+		<if test="qqNumber != null">
+			#{qqNumber},
+		</if>
+		<if test="emailNumber != null">
+			#{emailNumber},
+		</if>
+		<if test="proviceCode != null">
+			#{proviceCode},
+		</if>
+		<if test="cityCode != null">
+			#{cityCode},
+		</if>
+		<if test="areaCode != null">
+			#{areaCode},
+		</if>
+		<if test="trueAddress != null">
+			#{trueAddress},
+		</if>
+		<if test="clientType != null">
+			#{clientType},
+		</if>
+		<if test="clientKind != null">
+			#{clientKind},
+		</if>
+		<if test="clientSource != null">
+			#{clientSource},
+		</if>
+		<if test="toIndustry != null">
+			#{toIndustry},
+		</if>
+		<if test="publicDate != null">
+			#{publicDate},
+		</if>
+		<if test="ifPublic != null">
+			#{ifPublic},
+		</if>
+		<if test="accessoryBag != null">
+			#{accessoryBag},
+		</if>
+		<if test="otherComment != null">
+			#{otherComment},
+		</if>
+		<if test="activeFlag != null">
+			#{activeFlag},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+	</sql>
+	<insert id="save" parameterType="Client" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_CLIENT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<include refid="column_fragement" />
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<include refid="values_fragement" />
+		</trim>
+	</insert>
+	<update id="update" parameterType="Client">
+		UPDATE TB_CLIENT
+		<set>
+			<if test="clientCode != null">
+				CLIENT_CODE= #{clientCode},
+			</if>
+			<if test="clientName != null">
+				CLIENT_NAME= #{clientName},
+			</if>
+			<if test="clientPhone != null">
+				CLIENT_PHONE= #{clientPhone},
+			</if>
+			<if test="linkMan != null">
+				LINK_MAN= #{linkMan},
+			</if>
+			<if test="qqNumber != null">
+				QQ_NUMBER= #{qqNumber},
+			</if>
+			<if test="emailNumber != null">
+				EMAIL_NUMBER= #{emailNumber},
+			</if>
+			<if test="proviceCode != null">
+				PROVICE_CODE= #{proviceCode},
+			</if>
+			<if test="cityCode != null">
+				CITY_CODE= #{cityCode},
+			</if>
+			<if test="areaCode != null">
+				AREA_CODE = #{areaCode},
+			</if>
+			<if test="trueAddress != null">
+				TRUE_ADDRESS = #{trueAddress},
+			</if>
+			<if test="clientType != null">
+				CLIENT_TYPE = #{clientType},
+			</if>
+			<if test="clientKind != null">
+				CLIENT_KIND = #{clientKind},
+			</if>
+			<if test="clientSource != null">
+				CLIENT_SOURCE= #{clientSource},
+			</if>
+			<if test="toIndustry != null">
+				TO_INDUSTRY = #{toIndustry},
+			</if>
+			<if test="publicDate != null">
+				PUBLIC_DATE= #{publicDate},
+			</if>
+			<if test="ifPublic != null">
+				IF_PUBLIC = #{ifPublic},
+			</if>
+			<if test="accessoryBag != null">
+				ACCESSORY_BAG= #{accessoryBag},
+			</if>
+			<if test="otherComment != null">
+				OTHER_COMMENT = #{otherComment},
+			</if>
+			<if test="activeFlag != null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="createBy != null">
+				CREATE_BY = #{createBy},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="updateBy != null">
+				UPDATE_BY = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</update>
+	<delete id="delete">
+		DELETE FROM TB_CLIENT WHERE ROW_ID = #{rowId}
+	</delete>
+	<select id="get" resultType="Client">
+		<include refid="client_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="find" resultType="Client">
+		<include refid="client_base_select" />
+	</select>
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT COUNT(ROW_ID) FROM TB_CLIENT WHERE ACTIVE_FLAG = 1
+		<!-- 引入多条件查询的语句 -->
+		<include refid="search_fragement" />
+	</select>
+		<select id="getByName" resultType="Client">
+		<include refid="client_base_select" />
+		AND CLIENT_NAME = #{clientName}
+	</select>
+	<select id="findByPage" resultType="Client">
+		<include refid="client_base_select" />
+		<!-- 引入多条件查询的语句 -->
+		<include refid="search_fragement" />
+		<!-- 执行分页的语句 -->
+		LIMIT #{pagination.firstResult},#{pagination.maxResults}
+	</select>
+	<!-- 拼接多条件查询的SQL语句 -->
+	<sql id="search_fragement">
+		<if test="searchParam!=null">
+			<if test="searchParam.rowId!=null">
+				AND ROW_ID = #{searchParam.rowId}
+			</if>
+			<if test="searchParam.clientCode != null">
+				AND CLIENT_CODE= #{searchParam.clientCode},
+			</if>
+			<if test="searchParam.clientName != null">
+				AND CLIENT_NAME= #{searchParam.clientName},
+			</if>
+			<if test="searchParam.clientPhone != null">
+				AND CLIENT_PHONE= #{searchParam.clientPhone},
+			</if>
+			<if test="searchParam.linkMan != null">
+				AND LINK_MAN= #{searchParam.linkMan},
+			</if>
+			<if test="searchParam.qqNumber != null">
+				AND QQ_NUMBER= #{searchParam.qqNumber},
+			</if>
+			<if test="searchParam.emailNumber != null">
+				AND EMAIL_NUMBER= #{searchParam.emailNumber},
+			</if>
+			<if test="searchParam.proviceCode != null">
+				AND PROVICE_CODE= #{searchParam.proviceCode},
+			</if>
+			<if test="searchParam.cityCode != null">
+				AND CITY_CODE= #{searchParam.cityCode},
+			</if>
+			<if test="searchParam.areaCode != null">
+				AND AREA_CODE = #{searchParam.areaCode},
+			</if>
+			<if test="searchParam.trueAddress != null">
+				AND TRUE_ADDRESS = #{searchParam.trueAddress},
+			</if>
+			<if test="searchParam.clientType != null">
+				AND CLIENT_TYPE = #{searchParam.clientType},
+			</if>
+			<if test="searchParam.clientKind != null">
+				AND CLIENT_KIND = #{searchParam.clientKind},
+			</if>
+			<if test="searchParam.clientSource != null">
+				AND CLIENT_SOURCE= #{clientSource},
+			</if>
+			<if test="searchParam.toIndustry != null">
+				AND TO_INDUSTRY = #{searchParam.toIndustry},
+			</if>
+			<if test="searchParam.publicDate != null">
+				AND PUBLIC_DATE= #{searchParam.publicDate},
+			</if>
+			<if test="searchParam.ifPublic != null">
+				AND IF_PUBLIC = #{searchParam.ifPublic},
+			</if>
+			<if test="searchParam.accessoryBag != null">
+				AND ACCESSORY_BAG= #{searchParam.accessoryBag},
+			</if>
+			<if test="searchParam.otherComment != null">
+				AND OTHER_COMMENT = #{searchParam.otherComment},
+			</if>
+			<if test="searchParam.activeFlag!=null">
+				AND ACTIVE_FLAG = #{searchParam.activeFlag}
+			</if>
+		</if>
+	</sql>
+</mapper>

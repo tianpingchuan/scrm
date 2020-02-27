@@ -18,6 +18,8 @@ public class UploadFile implements Serializable {
 	private static final long serialVersionUID = 1L;
 	// layui默认传输上了的文件名称就叫file
 	private MultipartFile uploadFile;
+	
+	public static String UPLOAD_ADDRESS = "upload/";
 
 	public MultipartFile getUploadFile() {
 		return uploadFile;

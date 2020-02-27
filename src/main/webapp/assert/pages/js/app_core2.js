@@ -1,8 +1,9 @@
 var $; //将jQuery的$拿到外面定义,全局可用。
+var layer;
 //尝试书写公用的JS脚本
 layui.use([ 'layer', 'table', 'form' ], function() {
 	$ = layui.$;
-	var layer = layui.layer;
+	layer = layui.layer;
 	var table = layui.table;
 	var form = layui.form;
 	//为了统一的处理页面上的CRUD，现对页面中出现的各种元素的id,或filter,或class 规定如下。
@@ -16,23 +17,12 @@ layui.use([ 'layer', 'table', 'form' ], function() {
 	// 删除按钮的 lay-event="delete"
 	//绑定新增按钮
 	$(document).off('click', '.layui-btn-add').on('click', '.layui-btn-add',function() {
-		var url = $('#hideURL').val();
-		var title = $('#hideTitle').val();
-		$.ajax({
-			url : url+'/form',
-			success : function(htmlData) {
-				//通过layer的open方法打开弹出层
-				layer.open({
-					type : 1, //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）。 
-					title : title+'新增',
-					area : '800px', //设置宽度，高度自适应
-					content : htmlData,// 这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-					success : function() { //弹出层打开成功以后
-						// 让form表单渲染一下。 form_add_edit = <form lay-filter="form_add_edit">
-						form.render(null, 'form_add_edit');
-					}
-				});
-			}
+		var url = $('#hideURL').val()+'/form';
+		var title = $('#hideTitle').val()+'新增';
+		//调用通用的弹出form层。 如果此方法中的ajax执行成功 会回调  done方法
+		openBaseLayer(url,title).done(function(){
+			// 让form表单渲染一下。 form_add_edit = <form lay-filter="form_add_edit">
+			form.render(null, 'form_add_edit');
 		});
 	});
 	
@@ -85,39 +75,31 @@ layui.use([ 'layer', 'table', 'form' ], function() {
 		 var rowId = data.rowId;
 		switch (layEvent) {
 		case 'edit':
-			//打开修改的表单
-			$.ajax({
-				url : $('#hideURL').val()+'/form',
-				success : function(htmlData) {
-					//通过layer的open方法打开弹出层
-					layer.open({
-						type : 1, //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）。 
-						title : $('#hideTitle').val()+'修改',
-						area : '800px', //设置宽度，高度自适应
-						content : htmlData,// 这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-						success : function() { //弹出层打开成功以后
-							//用ajax的方式再根据id查询要修改的对象的数据
-							$.ajax({
-								type:'get',
-								url:$('#hideURL').val()+'/'+rowId,
-								success:function(obj){
-									//给表单赋值 form_add_edit = <form lay-filter="form_add_edit">
-									form.val("form_add_edit",obj);
-									//为了唯一性的校验，修改的时候设置一个原来的数据
-									//$.data('old')  = <input data-old=''/>
-									//处理如果表单中如果有需要进行唯一性的校验
-									$.each($('.check-unique'),function(index,item){
-										var $item = $(item);
-										var input_name = $item.attr('name');
-										$item.data('old',obj[input_name]);
-									});
-									// 让form表单渲染一下。 form_add_edit = <form lay-filter="form_add_edit">
-									form.render(null, 'form_add_edit');
-								}
-							});
-						}
-					});
-				}
+			//打开通用的layer弹层
+			var url = $('#hideURL').val()+'/form';
+			var title = $('#hideTitle').val()+'修改';
+			//调用通用的弹出层的方法，成功后会回调done方法
+			openBaseLayer(url,title).done(function(){
+				//用ajax的方式再根据id查询要修改的对象的数据
+				$.ajax({
+					type:'get',
+					url:$('#hideURL').val()+'/'+rowId,
+					success:function(obj){
+						//给表单赋值 form_add_edit = <form lay-filter="form_add_edit">
+						form.val("form_add_edit",obj);
+						//为了唯一性的校验，修改的时候设置一个原来的数据
+						//$.data('old')  = <input data-old=''/>
+						//处理如果表单中如果有需要进行唯一性的校验
+						$.each($('.check-unique'),function(index,item){
+							var $item = $(item);
+							var input_name = $item.attr('name');
+							$item.data('old',obj[input_name]);
+						});
+						// 让form表单渲染一下。 form_add_edit = <form lay-filter="form_add_edit">
+						form.render(null, 'form_add_edit');
+						form.render('select');//select是固定写法 不是选择器
+					}
+				});
 			});
 			break;
 		case 'delete':
@@ -157,8 +139,27 @@ layui.use([ 'layer', 'table', 'form' ], function() {
 		});
 	});
 });
-
-
+/**
+ * 打开一个通用的layer弹出框 
+ * @param url
+ * @param title
+ * @returns 
+ */
+function openBaseLayer(url,title){
+	// return 整个 ajax
+	return $.ajax({
+		url : url,
+		success : function(htmlData) {
+			//通过layer的open方法打开弹出层
+			layer.open({
+				type : 1, //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）。 
+				title : title,
+				area : '800px', //设置宽度，高度自适应
+				content : htmlData,// 这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+			});
+		}
+	});
+}
 /**
  * 通用的检测唯一的方法
  * @value 要校验的值

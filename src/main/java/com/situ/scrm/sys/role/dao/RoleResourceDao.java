@@ -55,4 +55,6 @@ public interface RoleResourceDao {
 	 * @param roleResourceList
 	 */
 	void saveBatch(@Param("roleResourceList") List<RoleResource> roleResourceList);
+
+
 }

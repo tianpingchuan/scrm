@@ -123,4 +123,18 @@ public class SysResource extends BaseClass implements Serializable {
 	public void setHasChild(Integer hasChild) {
 		this.hasChild = hasChild;
 	}
+
+	/**
+	 * @Title: toString
+	 * @Description:(这里用一句话描述这个方法的作用)
+	 * @return
+	 */
+	@Override
+	public String toString() {
+		return "SysResource [parentCode=" + parentCode + ", rescCode=" + rescCode + ", rescName=" + rescName
+				+ ", rescType=" + rescType + ", rescOrder=" + rescOrder + ", menuUrl=" + menuUrl + ", rescIcon="
+				+ rescIcon + ", hasChild=" + hasChild + ", children=" + children + ", actionInfoList=" + actionInfoList
+				+ ", parentName=" + parentName + "]";
+	}
+
 }

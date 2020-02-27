@@ -8,12 +8,12 @@
 				<div class="layui-card-header">
 					角色管理
 					<!-- 使用自定义标签在页面上判断 button或是超链接 是否可以显示 -->
-					<%-- <auth:have url="role" method="post"> --%>
+					<auth:have url="role" method="post">
 					<!-- 新增按钮 开始 -->
 					<button type="button" class="layui-btn layui-btn-sm layui-btn-add">
 						<i class="layui-icon layui-icon-addition"></i>新增
 					</button>
-					<%-- </auth:have> --%>
+					</auth:have>
 					<!-- 新增按钮 结束 -->
 				</div>
 				<div class="layui-card-body">
@@ -60,17 +60,25 @@
 <!-- 此处注意：必须有lay-event 才能通过table.on完成事件的绑定 -->
 <script type="text/html" id="roleBtnTpl">
 {{# if(d.roleKind ==1){ }}
+<auth:have url="role/setauth" method="get">
 	<a class="layui-btn layui-btn-xs layui-btn-disabled" >设置权限</a>
-<%--<auth:have url="role" method="put">--%>
+</auth:have>
+<auth:have url="role" method="put">
 	<a class="layui-btn layui-btn-xs layui-btn-disabled">修改</a>
-<%--</auth:have>--%>
+</auth:have>
+<auth:have url="role" method="delete">
 	<a class="layui-btn layui-btn-xs layui-btn-disabled">删除</a>
+</auth:have>
 {{# }else{  }}
-<%--<auth:have url="role" method="put">--%>
-	<a class="layui-btn layui-btn-xs" lay-event="set_resource">设置权限</a>
+<auth:have url="role/setauth" method="get">
+	<a class="layui-btn layui-btn-xs" onclick="setResource({{d.rowId}})">设置权限</a>
+</auth:have>
+<auth:have url="role" method="put">
 	<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-<%--</auth:have>--%>
+</auth:have>
+<auth:have url="role" method="delete">
 	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
+</auth:have>
  {{#  } }}
 </script>
 <!-- layui 定义的模板数据 -->

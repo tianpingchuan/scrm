@@ -20,7 +20,7 @@
 					<div class="layui-row" id="tree_set_auth_div">
 						<c:if test="${!empty resourceIdList}">
 						<c:forEach items="${resourceIdList}" var="item">
-						<div class="layui-col-xs3">
+						<div class="layui-col-xs2">
 							<div id="auth${item}"></div>
 						</div>
 						</c:forEach>

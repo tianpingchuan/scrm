@@ -6,6 +6,8 @@
  */ 
 package com.situ.scrm.sys.dd.service;
 
+import java.util.List;
+
 import com.situ.scrm.commons.domain.LayResult;
 import com.situ.scrm.sys.dd.domain.Dd;
 
@@ -71,4 +73,12 @@ public interface DdService {
 	 */ 
 	Dd getAllDdById(Long rowId);
 
+	/**
+	 * 
+	 * @Title: findAllByParentKey 
+	 * @Description:(通过父类key查询全部子字典信息)
+	 * @param parentKey
+	 * @return
+	 */
+	List<Dd> findAllByParentKey(String parentKey);
 }

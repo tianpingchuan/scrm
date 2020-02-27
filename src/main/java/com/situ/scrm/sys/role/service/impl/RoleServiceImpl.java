@@ -101,7 +101,7 @@ public class RoleServiceImpl implements RoleService {
 
 	/**
 	 * @Title: doEditRole
-	 * @Description:(执行删除)
+	 * @Description:(执行修改)
 	 * @param role
 	 * @return
 	 */

@@ -17,12 +17,19 @@ layui.use([ 'layer', 'table', 'form' ], function() {
 	// 删除按钮的 lay-event="delete"
 	//绑定新增按钮
 	$(document).off('click', '.layui-btn-add').on('click', '.layui-btn-add',function() {
+		var $this = $(this);
 		var url = $('#hideURL').val()+'/form';
 		var title = $('#hideTitle').val()+'新增';
 		//调用通用的弹出form层。 如果此方法中的ajax执行成功 会回调  done方法
 		openBaseLayer(url,title).done(function(){
 			// 让form表单渲染一下。 form_add_edit = <form lay-filter="form_add_edit">
 			form.render(null, 'form_add_edit');
+			//判断是否有需要回调的方法 如: xxxx()
+			var callMethod = $this.data('callback');
+			//判断当前的这个回调方法不为空, 才调用这个方法。
+			if(callMethod){//如果有则尝试进行执行此方法
+				eval(callMethod);
+			}
 		});
 	});
 	
@@ -68,37 +75,38 @@ layui.use([ 'layer', 'table', 'form' ], function() {
 	
    //注：tool 是工具条事件名，filter_table =<table lay-filter="filter_table">
 	table.on('tool(filter_table)',function(obj){
-		 var data = obj.data; //获得当前行数据
-		 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-		 //var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
-		 //通过data将要修改的数据的主键 取出
-		 var rowId = data.rowId;
+		var $tr = $(obj.tr);//获得当前行 tr 的 DOM 对象（如果有的话）
+		var data = obj.data; //获得当前行数据
+		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+		//通过data将要修改的数据的主键 取出
+		var rowId = data.rowId;
 		switch (layEvent) {
 		case 'edit':
+			//尝试取出修改时需要进行回调的方法名称,不是所有的页面都有。
+			var callback4Edit = $tr.find('a[lay-event="edit"]').data('callback');
 			//打开通用的layer弹层
 			var url = $('#hideURL').val()+'/form';
 			var title = $('#hideTitle').val()+'修改';
 			//调用通用的弹出层的方法，成功后会回调done方法
 			openBaseLayer(url,title).done(function(){
-				//用ajax的方式再根据id查询要修改的对象的数据
-				$.ajax({
-					type:'get',
-					url:$('#hideURL').val()+'/'+rowId,
-					success:function(obj){
-						//给表单赋值 form_add_edit = <form lay-filter="form_add_edit">
-						form.val("form_add_edit",obj);
-						//为了唯一性的校验，修改的时候设置一个原来的数据
-						//$.data('old')  = <input data-old=''/>
-						//处理如果表单中如果有需要进行唯一性的校验
-						$.each($('.check-unique'),function(index,item){
-							var $item = $(item);
-							var input_name = $item.attr('name');
-							$item.data('old',obj[input_name]);
-						});
-						// 让form表单渲染一下。 form_add_edit = <form lay-filter="form_add_edit">
-						form.render(null, 'form_add_edit');
-					}
+				//给表单赋值 form_add_edit = <form lay-filter="form_add_edit">
+				form.val("form_add_edit",data);
+				//为了唯一性的校验，修改的时候设置一个原来的数据
+				//$.data('old')  = <input data-old=''/>
+				//处理如果表单中如果有需要进行唯一性的校验
+				$.each($('.check-unique'),function(index,item){
+					var $item = $(item);
+					var input_name = $item.attr('name');
+					$item.data('old',data[input_name]);
 				});
+				// 让form表单渲染一下。 form_add_edit = <form lay-filter="form_add_edit">
+				form.render(null, 'form_add_edit');
+				
+				//判断如果 修改form页面弹出后，需要回调的方法名称不为空。
+				if(callback4Edit){
+					//尝试调用一下额外配置的为修改使用的回调函数 
+					eval(callback4Edit);
+				}
 			});
 			break;
 		case 'delete':
@@ -145,6 +153,10 @@ layui.use([ 'layer', 'table', 'form' ], function() {
  * @returns 
  */
 function openBaseLayer(url,title){
+	var area_width = 800;//默认的宽度为800
+	if($('#hideAreaWidth').length>0){
+		area_width = $('#hideAreaWidth').val();
+	}
 	// return 整个 ajax
 	return $.ajax({
 		url : url,
@@ -153,7 +165,7 @@ function openBaseLayer(url,title){
 			layer.open({
 				type : 1, //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）。 
 				title : title,
-				area : '800px', //设置宽度，高度自适应
+				area : area_width+'px', //设置宽度，高度自适应
 				content : htmlData,// 这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
 			});
 		}
@@ -195,6 +207,10 @@ function checkUnique(value, item,url,where){
 					//不要在ajax的success中return
 					//return '此名称以有人使用';
 					msg ='违反唯一值,请重新填写!!';
+					var formerror = $item.data('formerror');
+					if(formerror){
+						msg = formerror;
+					}
 				}
 			}
 		});

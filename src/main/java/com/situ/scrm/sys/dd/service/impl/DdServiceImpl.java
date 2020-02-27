@@ -124,7 +124,7 @@ public class DdServiceImpl implements Serializable, DdService {
 	public Long saveDd(Dd dd) {
 		// 得到资源编号
 		String ddKey = sysCountUtils.buildDdKey();
-		dd.setDdKey(ddKey);;
+		dd.setDdKey(ddKey);
 		// 根据父类数据处理排序问题。
 		String parentKey = dd.getParentKey();
 		Integer maxOrder = DdDao.getMaxOrder(parentKey);
@@ -241,6 +241,17 @@ public class DdServiceImpl implements Serializable, DdService {
 			dd.setParentValue(parentDd.getDdDescribe());
 		}
 		return dd;
+	}
+
+	/** 
+	 * @Title: findAllByParentKey 
+	 * @Description:(这里用一句话描述这个方法的作用)
+	 * @param parentKey
+	 * @return  
+	 */  
+	@Override
+	public List<Dd> findAllByParentKey(String parentKey) {
+		return DdDao.findByParent(parentKey);
 	}
 	
 	
